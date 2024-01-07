@@ -40,7 +40,7 @@ client.on('guildCreate', (guild) => {
   const checkMatch = file.find(f => f.guildid === guild.id)
   if (checkMatch) {
     console.log(`${guild.name} : ${guild.id} | このサーバーは正常にデータが削除できてなかったようです。\nデータの削除を実行します。以前のデータ>\n${JSON.stringify(file.filter(f => f.guildid === guild.id))}`)
-    file = file.filter(f => f.guildid !== guild.id)
+    file = file.filter(f => !(f.guildid === guild.id))
   }
 
   const msg = `+ Join > ${guild.name}[${guild.id}] | OWNER ${guild.ownerId}`
@@ -58,9 +58,9 @@ client.on('guildCreate', (guild) => {
 })
 
 client.on('guildDelete', (guild) => {
-  const file = JSON.parse(fs.readFileSync('./files/guilds.json'))
-  const newFile = file.filter(f => f.guildid !== guild.id)
-  console.log('file : ' + JSON.stringify(newFile))
+  let file = JSON.parse(fs.readFileSync('./files/guilds.json'))
+  file = file.filter(f => !(f.guildid === guild.id))
+  console.log('file : ' + JSON.stringify(file))
 
   const msg = `- Left > ${guild.name}[${guild.id}] | OWNER ${guild.ownerId}`
   console.log(msg)
